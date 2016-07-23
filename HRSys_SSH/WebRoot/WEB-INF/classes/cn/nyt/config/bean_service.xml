@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd ">
+
+	<!-- 7.2.3.1 配置所有service类bean，并注入dao类bean -->
+	<bean id="employeeService" class="cn.nyt.service.impl.EmployeeServiceImpl">
+		<property name="edao"  ref="employeeDao"/>
+	</bean>
+	
+	<bean id="administratorService" class="cn.nyt.service.impl.AdministratorServiceImpl">
+		<property name="adao" ref="administratorDao"/>
+	</bean>
+	
+	<bean id="departmentService" class="cn.nyt.service.impl.DepartmentServiceImpl">
+		<property name="ddao" ref="departmentDao"/>
+	</bean>
+
+</beans>

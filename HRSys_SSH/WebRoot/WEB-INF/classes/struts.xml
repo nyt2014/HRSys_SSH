@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<!-- 8.1 配置action,以及转发到的视图 -->
+<!-- 把action的class改成bean的id. -->
+<!-- class:指定action在spring容器的id -->
+<struts>
+	<!-- 配置文件有修改，则自动重新加载 -->
+	<constant name="struts.configuration.xml.reload" value="true"></constant>
+	 <!-- 开发模式下使用,这样可以打印出更详细的错误信息 -->
+	<constant name="struts.devMode" value="true" />
+	
+	
+	<package name="empPkg" extends="struts-default">
+
+	<!-- 全局视图的配置 -->
+	<global-results>
+		<result name="success">/index.jsp</result>
+		
+		<!-- 错误视图的配置 -->
+		<result name="error">/WEB-INF/page/error.jsp</result>
+	</global-results>
+	
+	<!-- 全局异常 
+	<global-exception-mappings>
+		 result 先找到全局视图的名称 
+		<exception-mapping result="error" exception="java.lang.Exception"/>
+		<exception-mapping result="error" exception="java.lang.NullPointerException"/>
+		
+	</global-exception-mappings>
+	-->
+
+		<action name="employee_*" class="employeeAction" method="{1}">
+			<!-- 员工列表视图 -->
+			<result name="listEmpls">/WEB-INF/page/listEmpls.jsp</result>
+			<!-- 添加员工视图 -->
+			<result name="addEmplView">/WEB-INF/page/addEmplView.jsp</result>
+			<!-- Update Employee View -->
+			<result name="updateEmplView">/WEB-INF/page/updateEmplView.jsp</result>
+			
+		</action>
+	</package>
+
+</struts>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd ">
+
+	<!-- 7.2.2.1 数据库基本信息资源文件位置的指定 -->
+	<context:property-placeholder location="classpath:cn/nyt/config/jdbc.properties" />
+
+	<!-- 7.2.2.2 配置c3p0数据源 -->
+	<bean id="c3p0DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driverclass}"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="user" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+
+		<property name="maxPoolSize" value="${c3p0.pool.size.max}"></property>
+		<property name="minPoolSize" value="${c3p0.pool.size.min}"></property>
+		<property name="initialPoolSize" value="${c3p0.pool.size.ini}"></property>
+		<property name="acquireIncrement" value="${c3p0.pool.size.increment}"></property>
+	</bean>
+
+	<!-- 7.2.2.3 配置本地会话工厂bean（spring和hibernate的核心关联入口） -->
+	<bean id="localSessionFactoryBean"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<!-- a. 给会话工厂bean注入C3P0数据源 -->
+		<property name="dataSource" ref="c3p0DataSource" />
+
+		<!-- b. 配置hibernate的属性集 -->
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+			</props>
+		</property>
+
+		<!-- c.指定映射资源文件（.hbm.xml）所在的目录集 -->
+		<property name="mappingDirectoryLocations">
+			<!-- spring会自动扫描以下目录中的映射资源文件 -->
+			<list>
+				<value>classpath:cn/nyt/bean</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- 7.2.2.4 配置hibernate事务管理器（由spring提供的其中一个平台事务管理器） -->
+	<bean id="hibernateTransactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<!-- a.给事务管理器注入会话工厂 -->
+		<property name="sessionFactory" ref="localSessionFactoryBean" />
+	</bean>
+
+	<!-- 7.2.2.5 事务通知配置（事务如何管理） -->
+	<!-- a.导入scheme：tx名字空间："http://www.springframework.org/schema/tx" -->
+	<!-- b.指定事务管理器 -->
+	<tx:advice id="txAdvice" transaction-manager="hibernateTransactionManager">
+		<!-- c.设置事务属性集tx:attributes 属性集包括：传播行为、数据库隔离级别、只读、回滚规则 -->
+		<tx:attributes>
+			<tx:method name="register" propagation="REQUIRED"
+				isolation="DEFAULT" />
+			<tx:method name="save*" propagation="REQUIRED" isolation="DEFAULT" />
+			<tx:method name="delete*" propagation="REQUIRED" isolation="DEFAULT" />
+			<tx:method name="update*" propagation="REQUIRED" isolation="DEFAULT" />
+
+			<tx:method name="login" propagation="REQUIRED" isolation="DEFAULT"
+				read-only="true" />
+			<tx:method name="find*" propagation="REQUIRED" isolation="DEFAULT"
+				read-only="true" />
+			<tx:method name="getAll*" propagation="REQUIRED" isolation="DEFAULT"
+				read-only="true" />
+
+			<tx:method name="*" propagation="SUPPORTS" isolation="DEFAULT"
+				read-only="false" />
+		</tx:attributes>
+
+	</tx:advice>
+	<!-- 7.2.2.6 切入点的配置（aop配置），这里使用pojo+xml的配置方式 -->
+	<aop:config>
+		<!-- a.切入点表达式的配置（拦截的目标对象，生成代理对象） -->
+		<aop:pointcut id="txPoincut" expression="execution(* *..*Service.*(..))" />
+		<!-- b.包装通知,给通知设置切入点（事务增强应用） -->
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPoincut"/>
+	</aop:config>
+</beans>
