@@ -17,17 +17,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public void saveEmp(Employee employee) {
 
-		edao.saveEmp(employee);
+		edao.save(employee);
 	}
 
 	@Override
 	public void deleteEmp(int id) {
-		edao.deleteEmp(id);
+		edao.delete(id);
 	}
 
 	@Override
 	public void updateEmp(Employee employee) {
-		edao.updateEmp(employee);
+		edao.update(employee);
 	}
 
 	@Override

@@ -9,29 +9,48 @@
 <struts>
 	<!-- 配置文件有修改，则自动重新加载 -->
 	<constant name="struts.configuration.xml.reload" value="true"></constant>
-	 <!-- 开发模式下使用,这样可以打印出更详细的错误信息 -->
+	<!-- 开发模式下使用,这样可以打印出更详细的错误信息 -->
 	<constant name="struts.devMode" value="true" />
-	
-	
+
+
 	<package name="empPkg" extends="struts-default">
+		<!-- 拦截器配置 -->
+		<interceptors>
+			<!-- 配置ActionInvocation拦截器 -->
+			<interceptor name="adminPrivilegeInterceptor"
+				class="cn.nyt.interceptor.AdminPrivilegeInterceptor" />
+			<!-- 定义新的拦截器栈-->
+			<interceptor-stack name="myStack">
+				<!-- 将默认的拦截器栈引入 -->
+				<interceptor-ref name="defaultStack" />
+				<!-- 自定义管理员权限拦截器 -->
+				<interceptor-ref name="adminPrivilegeInterceptor" />
+			</interceptor-stack>
+		</interceptors>
 
-	<!-- 全局视图的配置 -->
-	<global-results>
-		<result name="success">/index.jsp</result>
-		
-		<!-- 错误视图的配置 -->
-		<result name="error">/WEB-INF/page/error.jsp</result>
-	</global-results>
-	
-	<!-- 全局异常 
-	<global-exception-mappings>
-		 result 先找到全局视图的名称 
-		<exception-mapping result="error" exception="java.lang.Exception"/>
-		<exception-mapping result="error" exception="java.lang.NullPointerException"/>
-		
-	</global-exception-mappings>
-	-->
+		<!-- 通知struts2执行自定义的拦截器栈，覆盖struts.default中的配置-->
+		<default-interceptor-ref name="myStack" />
 
+		<!-- 全局视图的配置 -->
+		<global-results>
+			<!-- 登陆视图 -->
+			<result name="loginView">/WEB-INF/page/login.jsp</result>
+			
+			<result name="success">/index.jsp</result>
+
+			<!-- 错误视图的配置 -->
+			<result name="error">/WEB-INF/page/error.jsp</result>
+		</global-results>
+
+		<!-- 全局异常 <global-exception-mappings> result 先找到全局视图的名称 <exception-mapping 
+			result="error" exception="java.lang.Exception"/> <exception-mapping result="error" 
+			exception="java.lang.NullPointerException"/> </global-exception-mappings> -->
+		
+		<!-- 直接转发到管理员注册视图 -->
+		<action name="register">
+			<result name="success">/WEB-INF/page/addAdminView.jsp</result>
+		</action>
+		
 		<action name="employee_*" class="employeeAction" method="{1}">
 			<!-- 员工列表视图 -->
 			<result name="listEmpls">/WEB-INF/page/listEmpls.jsp</result>
@@ -39,8 +58,15 @@
 			<result name="addEmplView">/WEB-INF/page/addEmplView.jsp</result>
 			<!-- Update Employee View -->
 			<result name="updateEmplView">/WEB-INF/page/updateEmplView.jsp</result>
-			
 		</action>
+		<action name="admin_*" class="administratorAction" method="{1}">
+		</action>
+		
+		<action name="department_*" class="departmentAction" method="{1}">
+			<!-- Add Department -->
+			<result name="addDeptView">/WEB-INF/page/addDeptView.jsp</result>
+		</action>
+		
 	</package>
 
 </struts>

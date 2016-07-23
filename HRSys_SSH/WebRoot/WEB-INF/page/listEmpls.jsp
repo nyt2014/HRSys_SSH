@@ -7,19 +7,27 @@
 </head>
 
 <body>
-	<diV align="center" style="width:80%">
-		<s:a href="employee_addEmplView.action">Add a Employee</s:a>
-		<s:a href="employee_#####">Add a Department(NULL)</s:a>
-	</diV>
-
+	<!-- 将自定义的头文件引入 -->
+	<jsp:include page="/WEB-INF/page/head.jsp"/>
+	<s:form  action="employee_searchEmpls.action" method="post" theme="simple" >
+		<table border="1" align="center" width="80%" cellpadding="5"
+			cellspacing="0" >
+			<tr>
+				<td colspan="2">
+				<s:textfield name="empName" id="empName" value=""/>
+				<s:submit value="Search EmployeeName"/> 
+				</td>
+			</tr>
+		</table>
+	</s:form>
 	<table border="1" align="center" width="80%" cellpadding="5"
-		cellspacing="0">
+		cellspacing="0"  >
 		<tr>
 			<th>Order</th>
 			<th>Employee Id</th>
 			<th>Employee Name</th>
 			<th>Employee Salary</th>
-<!-- 			<th>Location Dapartment</th> -->
+			<th>Location Department</th>
 			<th>Operate</th>
 		</tr>
 
@@ -30,11 +38,8 @@
 					<td><s:property value="#empl.id" /></td>
 					<td><s:property value="#empl.empName" /></td>
 					<td><s:property value="#empl.salary" /></td>
-<!-- 					<s:if test="#empl.dept!=null"> -->
-<!-- 						<s:iterator var="dept" value="#reuqest.depts"> -->
-								<td><s:property value="#empl.id" /></td>
-<!-- 						</s:iterator> -->
-<!-- 					</s:if> -->
+					<td><s:property value="#empl.dept.name" /></td>
+					
 					<td>
 						<s:a href="employee_updateEmplView.action?id=%{#empl.id}">Update</s:a>
 						<s:a href="employee_deleteEmpl.action?id=%{#empl.id}">Delete</s:a>

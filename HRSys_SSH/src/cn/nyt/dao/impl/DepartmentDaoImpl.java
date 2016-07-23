@@ -7,8 +7,8 @@ import org.hibernate.SessionFactory;
 import cn.nyt.bean.Department;
 import cn.nyt.dao.DepartmentDao;
 
-public class DepartmentDaoImpl implements DepartmentDao {
-	// IOCÈÝÆ÷×¢ÈëlocalSessionFactoryBean
+public class DepartmentDaoImpl extends BaseDaoImpl<Department> implements DepartmentDao {
+	/*// IOCÈÝÆ÷×¢ÈëlocalSessionFactoryBean
 	private SessionFactory sessionFactory;
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -17,12 +17,13 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
 	@Override
 	public Department findById(int id) {
-		/*return (Department) sessionFactory.getCurrentSession()//
-				.createQuery("FROM Department WHERE id=?")//
-				.setParameter(0, id)//
-				.uniqueResult();*/
-		return (Department) sessionFactory.getCurrentSession().get(Department.class, id);
-				 
+		
+		 * return (Department) sessionFactory.getCurrentSession()//
+		 * .createQuery("FROM Department WHERE id=?")// .setParameter(0, id)//
+		 * .uniqueResult();
+		 
+		return (Department) sessionFactory.getCurrentSession().get(
+				Department.class, id);
 
 	}
 
@@ -32,6 +33,6 @@ public class DepartmentDaoImpl implements DepartmentDao {
 				.createQuery("FROM Department")//
 				.list();
 
-	}
+	}*/
 
 }

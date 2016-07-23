@@ -11,5 +11,14 @@
 		<property name="emplService" ref="employeeService"/>
 		<property name="deptService" ref="departmentService"/>
 	</bean>
+	
+	<bean id="administratorAction" class="cn.nyt.web.action.AdministratorAction">
+			<property name="adminService" ref="administratorService"/>		
+	</bean>
+	
+	<bean id="departmentAction" class="cn.nyt.web.action.DepartmentAction">
+		<property name="deptService" ref="departmentService"/>
+	</bean>
+	
 
 </beans>

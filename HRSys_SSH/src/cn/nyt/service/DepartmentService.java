@@ -9,4 +9,12 @@ public interface DepartmentService {
 	public Department findById(int id);
 
 	public List<Department> getAllDept();
+
+	void delete(int id);
+
+	void update(Department dept);
+
+	List<Department> getAll();
+	
+	void save(Department dept);
 }

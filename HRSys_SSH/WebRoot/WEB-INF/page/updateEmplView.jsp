@@ -8,6 +8,8 @@
 </head>
 
 <body>
+	<jsp:include page="/WEB-INF/page/head.jsp"/>
+	
 	<s:form action="/employee_updateEmpl.action" method="post" theme="simple">
 		<table border="1" align="center" width="80%" cellpadding="5"
 		cellspacing="0">

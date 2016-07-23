@@ -8,7 +8,7 @@
 		<id name="id">
 			<generator class="native"/>
 		</id>
-		<property name="adminName" type="string" column="adminName" length="20" not-null="true"/>
+		<property name="adminName" type="string" column="adminName" length="20" unique="false" not-null="true"/>
 		<property name="pwd" length="10" not-null="true"></property>
 		
 	</class>	

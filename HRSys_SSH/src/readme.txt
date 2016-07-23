@@ -179,10 +179,41 @@
 		<!-- class:指定action在spring容器的id -->
 		<action name="HelloWorldAction_*" class="helloWorldAction" method="{1}">
 	
-九、视图添加及其完善
+九、Action的编写和视图添加及其完善
+	9.0 Action的编写（常用操作）
+		9.0.1实现ModelDriven接口
+		9.0.2实现RequestAware接口
+		9.0.3继承ActionSupport类
+		9.0.4提供service注入入口
+		
 	9.1 员工的增删改
 	9.2 写BaseDao.java
+		void save(T t);
+		void delete(int id); 
+		void update(T t);
+		T findById(int id);
+		List<T> getAll();
+		(不要用service接口去实现dao的接口)
 	9.3 完成用户的注册和登陆
 	9.4 写权限拦截器
 
 
+
+十、待完善
+	10.1 出现异常错误、添加或者登陆失败以及登陆、添加成功信息应该跳转到同一个友好提示视图
+		出现异常停留，提供会首页链接
+		添加或者登陆、注册成功，显示成功信息5秒后自动跳回首页
+	10.2 文件上传
+	10.3 表单的校验
+		struts2校验器的使用
+	10.4 国际化
+	10.5 给管理员添加权限属性
+	10.6 密码转MD5码提高安全性
+	10.7 实现按人名检索功能
+	10.8 数据分页显示
+	10.9 页面分区
+	10.10 并发访问问题
+	10.11 数据库存取优化
+			数据缓存
+	
+	
